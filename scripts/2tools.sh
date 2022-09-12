@@ -23,6 +23,50 @@ if has_command "brew"; then
 fi
 
 if has_command "brew"; then
+  if ! has_command "dockutil"; then
+    e_pending "Installing dockutil"
+    pkg_name=$(curl -s https://api.github.com/repos/kcrawford/dockutil/releases/latest | grep "dockutil-.*\.pkg\"" \
+     | head -1| cut -d : -f 2,3 | tr -d \" | tr -d ,| xargs )
+    source="https://github.com/kcrawford/dockutil/releases/latest/download/${pkg_name}"
+    tempPath="/tmp/dockutil.pkg"
+    curl -L --max-redirs 5 -sS "$source" -o "$tempPath"
+    sudo installer -pkg "/tmp/dockutil.pkg" -target /
+    rm /tmp/dockutil.pkg
+    test_command "dockutil"
+  fi
+fi
+
+#PYTHON----
+
+
+if has_command "brew"; then
+  if ! has_command "pyenv"; then
+    e_pending "Installing pyenv"
+    echo 'if command -v pyenv 1>/dev/null 2>&1; then' >> ~/.zshrc
+    echo '  eval "$(pyenv init -)"' >> ~/.zshrc
+    echo 'fi' >> ~/.zshrc
+    brew install pyenv
+    test_command "pyenv"
+  fi
+fi
+
+if has_command "pyenv"; then
+  e_pending "Installing pyenv python environment"
+  pyenv install 3.10.6
+  pyenv global 3.10.6
+fi
+
+if has_command "brew"; then
+  if ! has_command "poetry"; then
+    e_pending "Installing poetry"
+    brew install poetry
+    test_command "poetry"
+  fi
+fi
+
+
+
+if has_command "brew"; then
   if ! has_command "git"; then
     get_consent "Install git"
     if has_consent; then
@@ -33,16 +77,6 @@ if has_command "brew"; then
   fi
 fi
 
-if has_command "brew"; then
-  if ! has_command "git-flow"; then
-    get_consent "Install git-flow"
-    if has_consent; then
-      e_pending "Installing git-flow"
-      brew install git-flow
-      test_command "git-flow"
-    fi
-  fi
-fi
 
 if has_command "brew"; then
   if ! has_command "zsh"; then
@@ -133,7 +167,7 @@ if has_command "brew"; then
 fi
 
 if has_command "brew"; then
-  if ! has_command "nvm"; then
+  if ! [ -d "${HOME}/.nvm/.git" ]; then
     get_consent "Install nvm (Node via nvm)"
     if has_consent; then
       e_pending "Installing nvm"
@@ -181,6 +215,38 @@ if has_command "npm"; then
     npm install --location=global serve@latest
     test_command "serve"
   fi
+fi
+
+# Set up Git
+get_consent "Setup Git"
+if has_consent; then
+  e_pending "Set Up Git"
+  e_pending "✔ Set Git to store credentials in Keychain"
+  git config --global credential.helper osxkeychain
+
+  if [ -n "$(git config --global user.email)" ]; then
+      e_pending "✔ Git email is set to $(git config --global user.email)"
+  else
+      read -p 'What is your Git email address?: ' gitEmail
+      git config --global user.email "$gitEmail"
+  fi
+
+  if [ -n "$(git config --global user.name)" ]; then
+      e_pending "✔ Git display name is set to $(git config --global user.name)"
+  else
+      read -p 'What is your Git display name (Firstname Lastname)?: ' gitName
+      git config --global user.name "$gitName"
+  fi
+  
+  e_pending "✔ Configure git to always ssh when dealing with https github repos"
+  git config --global url."git@github.com:".insteadOf https://github.com/
+  # you can remove this change by editing your ~/.gitconfig file
+
+  e_pending "✔ Adding github.com to known_hosts file [~/.ssh/known_hosts]"
+  mkdir -p ~/.ssh 
+  touch ~/.ssh/known_hosts
+  touch ~/.ssh/config
+  ssh-keyscan -t rsa github.com >> ~/.ssh/known_hosts
 fi
 
 # ------------------------------------------------------------------------------

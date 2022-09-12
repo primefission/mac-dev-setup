@@ -8,15 +8,16 @@ e_message "Checking applications/casks"
 
 declare -a cask_name=(
 "font-jetbrains-mono-nerd-font"
+"font-hack-nerd-font"
 )
 
 declare -a cask_desc=(
 "JetBrains Mono Nerd Font"
+"Font Hack Nerd Font"
 )
 
 declare -a app_name=(
 "1password"
-"brave-browser"
 "diffmerge"
 "discord"
 "figma"
@@ -24,17 +25,14 @@ declare -a app_name=(
 "insomnia"
 "iterm2"
 "rectangle"
-"slack"
 "sourcetree"
-"spotify"
 "visual-studio-code"
 "warp"
 "zoom"
 )
 
 declare -a app_desc=(
-"1Password 7"
-"Brave Browser"
+"1Password"
 "DiffMerge"
 "Discord"
 "Figma"
@@ -42,9 +40,7 @@ declare -a app_desc=(
 "Insomnia"
 "iTerm"
 "Rectangle"
-"Slack"
 "Sourcetree"
-"Spotify"
 "Visual Studio Code"
 "Warp"
 "Zoom.us"
@@ -54,8 +50,8 @@ if has_command "brew"; then
   for i in "${!cask_name[@]}"; do
     DESC=${cask_desc[$i]}
     NAME=${cask_name[$i]}
-    test_cask "$DESC"
-    if ! has_cask "$DESC"; then
+    test_cask "$NAME"
+    if ! has_cask "$NAME"; then
       get_consent "Install $DESC"
       if has_consent; then
         e_pending "Installing $NAME"

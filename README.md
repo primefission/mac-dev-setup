@@ -407,3 +407,39 @@ omz update
 ```sh
 brew update && brew upgrade && brew doctor && brew cleanup
 ```
+
+## Other Inspirations
+https://github.com/geerlingguy/mac-dev-playbook
+https://github.com/vendasta/setup-new-computer-script
+
+## Manual Installs
+
+#### Terminal Fonts
+script will download into the git folder - double click each font to install, then setup via mac terminal preferences to use Menlso font
+
+#### Synology Drive CLient
+https://www.synology.com/en-my/support/download/DS1618+?version=7.1#system
+
+#### 1password
+Login to 1password on the web
+
+#### Github ssh
+https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
+https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+
+```sh
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
+update .ssh/config file
+with 
+```sh
+Host *
+  AddKeysToAgent yes
+  UseKeychain yes
+  IdentityFile ~/.ssh/id_dev_ed25519
+```
+
+```sh
+ssh-add --apple-use-keychain ~/.ssh/id_dev_d25519
+```
+

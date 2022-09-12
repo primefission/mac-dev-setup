@@ -6,21 +6,20 @@ source _utils.sh
 e_message "Creating defaults"
 # ------------------------------------------------------------------------------
 
-get_consent "Create Dock spacers"
-if has_consent; then
-  e_pending "Creating Dock spacers"
-  defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'
-  defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'
-  defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="spacer-tile";}'
-  killall Dock
+
+
+get_consent "Change mouse direction - needs a logout"
+  if has_consent; then
+  e_pending "Changing mouse direction"
+  defaults write -g com.apple.swipescrolldirection -bool FALSE
 fi
 
-get_consent "Autohide Dock"
-if has_consent; then
-  e_pending "Autohiding Dock"
-  defaults write com.apple.dock autohide -boolean true
-  killall Dock
-fi
+#get_consent "Autohide Dock"
+#if has_consent; then
+#  e_pending "Autohiding Dock"
+#  defaults write com.apple.dock autohide -boolean true
+#  killall Dock
+#fi
 
 get_consent "Display hidden Finder files/folders"
 if has_consent; then
@@ -47,6 +46,15 @@ if ! has_path "Sandbox"; then
   fi
 fi
 
+if ! has_path "git/powerlevel10k-media"; then
+  get_consent "Clone into ~/git/powerlevel10k-media folder"
+  if has_consent; then
+    e_pending "Creating ~/git/powerlevel10k-media folder"
+    git -C ~/git clone https://github.com/romkatv/powerlevel10k-media.git 
+    test_path "git/powerlevel10k-media"
+  fi
+fi
+
 if ! has_command "xcode-select"; then
   e_pending "Installing xcode-select (CLI tools)"
   xcode-select --install
@@ -64,6 +72,22 @@ if ! has_command "brew"; then
   brew tap homebrew/cask-fonts
   test_command "brew"
 fi
+
+get_consent "Expand save and print panel by default"
+  if has_consent; then
+    e_pending "✔ General: Expand save and print panel by default"
+    defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+    defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+    defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+    defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
+  fi
+
+get_consent "Remove press and hold keys"
+if has_consent; then
+    e_pending "✔ Typing: Disable press-and-hold for keys in favor of key repeat"
+    defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+  fi
+        
 
 # ------------------------------------------------------------------------------
 e_message "Defaults complete"
