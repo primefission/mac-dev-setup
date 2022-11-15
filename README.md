@@ -6,10 +6,11 @@
 
 For a guided setup, open up **Terminal.app** and run the following command:
 
-1. Save repo to `~/Downloads` folder:
+1. Save repo to `~/git` folder:
    ```sh
-   git clone https://github.com/michaelschwobe/mac-dev-setup.git ~/Downloads/mac-dev-setup && \
-   cd ~/Downloads/mac-dev-setup/scripts
+   mkdir ~/git
+   git clone https://github.com/primefission/mac-dev-setup.git ~/git/mac-dev-setup && \
+   cd ~/git/mac-dev-setup/scripts
    ```
 2. Run the installer script.
    ```sh
