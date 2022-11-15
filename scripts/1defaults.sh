@@ -28,23 +28,23 @@ if has_consent; then
   killall Finder
 fi
 
-if ! has_path "Developer"; then
-  get_consent "Create ~/Developer folder"
+if ! has_path "git"; then
+  get_consent "Create ~/git folder"
   if has_consent; then
-    e_pending "Creating ~/Developer folder"
-    mkdir -p ~/Developer
-    test_path "Developer"
+    e_pending "Creating ~/git folder"
+    mkdir -p ~/git
+    test_path "git"
   fi
 fi
 
-if ! has_path "Sandbox"; then
-  get_consent "Create ~/Sandbox folder"
-  if has_consent; then
-    e_pending "Creating ~/Sandbox folder"
-    mkdir -p ~/Sandbox
-    test_path "Sandbox"
-  fi
-fi
+#if ! has_path "Sandbox"; then
+#  get_consent "Create ~/Sandbox folder"
+#  if has_consent; then
+#    e_pending "Creating ~/Sandbox folder"
+#    mkdir -p ~/Sandbox
+#    test_path "Sandbox"
+#  fi
+#fi
 
 if ! has_path "git/powerlevel10k-media"; then
   get_consent "Clone into ~/git/powerlevel10k-media folder"
