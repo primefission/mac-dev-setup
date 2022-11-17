@@ -437,10 +437,15 @@ with
 Host *
   AddKeysToAgent yes
   UseKeychain yes
-  IdentityFile ~/.ssh/id_dev_ed25519
+  IdentityFile ~/.ssh/id_ed25519
 ```
 
 ```sh
-ssh-add --apple-use-keychain ~/.ssh/id_dev_d25519
+ssh-add --apple-use-keychain ~/.ssh/id_ed25519
+```
+
+Copy key to clipboard and paste into github settings
+```sh
+$ pbcopy < ~/.ssh/id_ed25519.pub
 ```
 
