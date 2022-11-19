@@ -53,6 +53,7 @@ fi
 if has_command "pyenv"; then
   e_pending "Installing pyenv python environment"
   pyenv install 3.10.6
+  pyenv install 3.11
   pyenv global 3.10.6
 fi
 

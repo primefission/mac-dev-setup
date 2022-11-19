@@ -7,16 +7,6 @@ e_message "Creating summary"
 # ------------------------------------------------------------------------------
 
 e_success "$(uname -p) Architecture"
-if has_path "Developer"; then
-  e_success "~/Developer"
-else
-  e_failure "~/Developer"
-fi
-if has_path "Sandbox"; then
-  e_success "~/Sandbox"
-else
-  e_failure "~/Sandbox"
-fi
 test_command "xcode-select"
 test_command "brew"
 test_command "watchman"
@@ -35,7 +25,7 @@ test_command "n"
 test_command "yarn"
 test_command "pnpm"
 test_command "npm"
-test_command "serve"
+#test_command "serve"
 if has_cask "font-jetbrains-mono-nerd-font"; then
   e_success "JetBrains Mono Nerd Font"
 else
