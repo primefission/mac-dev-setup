@@ -55,6 +55,9 @@ if has_command "pyenv"; then
   pyenv install 3.10.6
   pyenv install 3.11
   pyenv global 3.10.6
+  echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.zshrc
+  echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.zshrc
+  echo 'eval "$(pyenv init -)"' >> ~/.zshrc
 fi
 
 if has_command "brew"; then
@@ -64,6 +67,13 @@ if has_command "brew"; then
     test_command "poetry"
   fi
 fi
+
+if has_command "brew"; then
+    e_pending "Installing six"
+    brew install six
+  fi
+fi
+
 
 
 
